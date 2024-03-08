@@ -2,7 +2,7 @@ const fs = require("fs").promises;
 const readline = require("readline");
 
 const memoryAddressChars = "0123456789ABCDEF";
-const garbageChars = "!@$%^&*()[]{}|?<>\\/";
+const garbageChars = ":.,;'#~¬`!@$%^&*()[]{}|?<>\\/";
 const difficulties = {
   1: { wordLength: 4, wordCount: 5 },
   2: { wordLength: 6, wordCount: 6 },
@@ -17,7 +17,7 @@ const rl = readline.createInterface({
 });
 
 rl.on("close", function () {
-  console.log("SHUTTING DOWN");
+  console.log("SHUTTING DOWN.");
   process.exit(0);
 });
 
@@ -41,18 +41,18 @@ async function beginGuesses(correctWord) {
     let guessed = false;
     let attempt = 0;
     do {
-      if (attempt === 3) console.log(">DANGER. LOCKOUT IMMINENT");
+      if (attempt === 3) console.log(">DANGER. LOCKOUT IMMINENT.");
 
-      const guess = await prompt("");
-      console.log(`>${guess.toUpperCase()}`);
+      const guess = await prompt(">");
+      console.log(`>${guess.toUpperCase()}.`);
 
       const result = checkGuess(guess, correctWord);
       guessed = result.length === correctWord.length;
 
-      if (!guessed) console.log(">ACCESS DENIED");
-      else console.log(">ACESS GRANTED");
+      if (!guessed) console.log(">ACCESS DENIED.");
+      else console.log(">ACESS GRANTED.");
 
-      console.log(`>${result.length}/${correctWord.length} CORRECT`);
+      console.log(`>${result.length}/${correctWord.length} CORRECT.`);
       console.log("");
 
       attempt++;
@@ -73,7 +73,7 @@ function getRandomChar() {
 function getRandomMemoryAddress() {
   return (
     "0x" +
-    Array.from({ length: 5 })
+    Array.from({ length: 4 })
       .map(() => getRandomChar())
       .join("")
   );
@@ -160,7 +160,7 @@ function getNextWord(words, selectedWords) {
 }
 
 async function getWordsOfLength(wordLength) {
-  const wordList = await fs.readFile("words.txt", "utf8");
+  const wordList = await fs.readFile("enable1.txt", "utf8");
   const words = [];
 
   for (const word of wordList.split("\r\n")) {
@@ -201,7 +201,7 @@ async function generateGame(wordLength, wordCounts) {
 
 async function getDifficulty() {
   try {
-    const difficulty = await prompt("Difficulty (1-5)? ");
+    const difficulty = await prompt(">DIFFICULTY (1-5)? ");
     return difficulties[difficulty];
   } catch (e) {
     console.error("Unable to prompt", e);
